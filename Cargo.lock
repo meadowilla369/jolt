@@ -2343,6 +2343,7 @@ version = "0.1.0"
 dependencies = [
  "jolt-inlines-sha2",
  "jolt-sdk",
+ "serde",
 ]
 
 [[package]]

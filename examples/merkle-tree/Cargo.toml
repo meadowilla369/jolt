@@ -11,3 +11,7 @@ jolt-inlines-sha2 = { workspace = true, features = ["host"] }
 guest = { package = "merkle-tree-guest", path = "./guest" }
 
 hex.workspace = true
+
+[[bin]]
+name = "merkle-tree-4096"
+path = "src/main_4096.rs"

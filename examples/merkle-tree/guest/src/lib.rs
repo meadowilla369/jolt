@@ -1,5 +1,8 @@
 #![cfg_attr(feature = "guest", no_std)]
 
+extern crate alloc;
+
+use alloc::vec::Vec;
 use core::ops::Deref;
 
 /// Computes the Merkle root of a 4-leaf tree
@@ -38,4 +41,36 @@ fn merkle_tree(
     root_pair[..32].copy_from_slice(&h01);
     root_pair[32..].copy_from_slice(&h23);
     jolt_inlines_sha2::Sha256::digest(&root_pair)
+}
+
+#[jolt::provable(
+    memory_size = 1048576,
+    max_trace_length = 33554432,
+    max_untrusted_advice_size = 262144
+)]
+fn merkle_tree_4096(leaves: jolt::UntrustedAdvice<Vec<[u8; 32]>>) -> [u8; 32] {
+    let leaves = leaves.deref();
+    if leaves.len() != 4096 {
+        return [0u8; 32];
+    }
+
+    let mut level = Vec::with_capacity(leaves.len());
+    for leaf in leaves.iter() {
+        level.push(jolt_inlines_sha2::Sha256::digest(leaf));
+    }
+
+    while level.len() > 1 {
+        let mut next_level = Vec::with_capacity(level.len() / 2);
+        let mut i = 0;
+        while i < level.len() {
+            let mut pair = [0u8; 64];
+            pair[..32].copy_from_slice(&level[i]);
+            pair[32..].copy_from_slice(&level[i + 1]);
+            next_level.push(jolt_inlines_sha2::Sha256::digest(&pair));
+            i += 2;
+        }
+        level = next_level;
+    }
+
+    level[0]
 }
