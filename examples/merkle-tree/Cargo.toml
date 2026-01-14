@@ -15,3 +15,47 @@ hex.workspace = true
 [[bin]]
 name = "merkle-tree-4096"
 path = "src/main_4096.rs"
+
+[[bin]]
+name = "merkle-tree-2048"
+path = "src/main_2048.rs"
+
+[[bin]]
+name = "merkle-tree-1024"
+path = "src/main_1024.rs"
+
+[[bin]]
+name = "merkle-tree-512"
+path = "src/main_512.rs"
+
+[[bin]]
+name = "merkle-tree-256"
+path = "src/main_256.rs"
+
+[[bin]]
+name = "merkle-tree-128"
+path = "src/main_128.rs"
+
+[[bin]]
+name = "merkle-tree-64"
+path = "src/main_64.rs"
+
+[[bin]]
+name = "merkle-tree-32"
+path = "src/main_32.rs"
+
+[[bin]]
+name = "merkle-tree-16"
+path = "src/main_16.rs"
+
+[[bin]]
+name = "merkle-tree-8"
+path = "src/main_8.rs"
+
+[[bin]]
+name = "merkle-tree-4"
+path = "src/main_4.rs"
+
+[[bin]]
+name = "merkle-tree-2"
+path = "src/main_2.rs"
