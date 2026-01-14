@@ -6,19 +6,19 @@ pub fn main() {
     tracing_subscriber::fmt::init();
 
     let target_dir = "/tmp/jolt-guest-targets";
-    let mut program = guest::compile_merkle_tree_2048(target_dir);
+    let mut program = guest::compile_merkle_tree_pow2(target_dir);
 
-    let shared_preprocessing = guest::preprocess_shared_merkle_tree_2048(&mut program);
+    let shared_preprocessing = guest::preprocess_shared_merkle_tree_pow2(&mut program);
     let prover_preprocessing =
-        guest::preprocess_prover_merkle_tree_2048(shared_preprocessing.clone());
-    let verifier_preprocessing = guest::preprocess_verifier_merkle_tree_2048(
+        guest::preprocess_prover_merkle_tree_pow2(shared_preprocessing.clone());
+    let verifier_preprocessing = guest::preprocess_verifier_merkle_tree_pow2(
         shared_preprocessing,
         prover_preprocessing.generators.to_verifier_setup(),
     );
 
     let prove_merkle_tree =
-        guest::build_prover_merkle_tree_2048(program, prover_preprocessing.clone());
-    let verify_merkle_tree = guest::build_verifier_merkle_tree_2048(verifier_preprocessing);
+        guest::build_prover_merkle_tree_pow2(program, prover_preprocessing.clone());
+    let verify_merkle_tree = guest::build_verifier_merkle_tree_pow2(verifier_preprocessing);
 
     let mut leaves = Vec::with_capacity(2048);
     for i in 0..2048 {

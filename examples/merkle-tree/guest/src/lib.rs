@@ -77,38 +77,6 @@ fn merkle_tree_4096(leaves: jolt::UntrustedAdvice<Vec<[u8; 32]>>) -> [u8; 32] {
 
 #[jolt::provable(
     memory_size = 1048576,
-    max_trace_length = 16777216,
-    max_untrusted_advice_size = 131072
-)]
-fn merkle_tree_2048(leaves: jolt::UntrustedAdvice<Vec<[u8; 32]>>) -> [u8; 32] {
-    let leaves = leaves.deref();
-    if leaves.len() != 2048 {
-        return [0u8; 32];
-    }
-
-    let mut level = Vec::with_capacity(leaves.len());
-    for leaf in leaves.iter() {
-        level.push(jolt_inlines_sha2::Sha256::digest(leaf));
-    }
-
-    while level.len() > 1 {
-        let mut next_level = Vec::with_capacity(level.len() / 2);
-        let mut i = 0;
-        while i < level.len() {
-            let mut pair = [0u8; 64];
-            pair[..32].copy_from_slice(&level[i]);
-            pair[32..].copy_from_slice(&level[i + 1]);
-            next_level.push(jolt_inlines_sha2::Sha256::digest(&pair));
-            i += 2;
-        }
-        level = next_level;
-    }
-
-    level[0]
-}
-
-#[jolt::provable(
-    memory_size = 1048576,
     max_trace_length = 33554432,
     max_untrusted_advice_size = 262144
 )]
